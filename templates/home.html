@@ -432,7 +432,7 @@
           <div class="col-md-4">
             <div class="p-3 border border-dark rounded-4" style="background: rgba(255,255,255,0.015);">
               <div style="font-size:0.65rem; color:var(--text3); text-transform:uppercase; letter-spacing: 0.05em;">VIP Segment LTV</div>
-              <div class="text-white fs-4 font-weight-900 mt-1">£142,548</div>
+              <div class="text-white fs-4 font-weight-900 mt-1">₹142,548</div>
               <span class="badge seg-vip mt-2"><span class="dot"></span> 27% Base</span>
             </div>
           </div>
@@ -589,8 +589,8 @@
         <div class="col-md-6 border-end border-dark pe-md-5">
           <div class="calc-slider-wrap">
             <div class="calc-slider-header">
-              <span>Annual Revenue (£)</span>
-              <span class="val" id="revVal">£1,200,000</span>
+              <span>Annual Revenue (₹)</span>
+              <span class="val" id="revVal">₹1,200,000</span>
             </div>
             <input 
               type="range" 
@@ -627,19 +627,19 @@
           <div class="row g-3">
             <div class="col-sm-6">
               <div class="roi-metric-card">
-                <div class="roi-metric-val" id="vipUnlock">£1,450</div>
+                <div class="roi-metric-val" id="vipUnlock">₹1,450</div>
                 <div class="roi-metric-lbl">VIP Loyalty Lift / mo</div>
               </div>
             </div>
             <div class="col-sm-6">
               <div class="roi-metric-card">
-                <div class="roi-metric-val" id="churnYield">£2,380</div>
+                <div class="roi-metric-val" id="churnYield">₹2,380</div>
                 <div class="roi-metric-lbl">Win-Back Recovery / mo</div>
               </div>
             </div>
             <div class="col-12 mt-3">
               <div class="roi-metric-card" style="background: rgba(16,185,129,0.04); border-color: rgba(16,185,129,0.25);">
-                <div class="roi-metric-val text-emerald fs-3 font-weight-900" id="totalUnlock">£3,830</div>
+                <div class="roi-metric-val text-emerald fs-3 font-weight-900" id="totalUnlock">₹3,830</div>
                 <div class="roi-metric-lbl" style="color: #6ee7b7;">Estimated Monthly Value Unlocked</div>
               </div>
             </div>
@@ -705,7 +705,7 @@
       const riskShare = parseFloat(document.getElementById('riskSlider').value);
 
       // Label updates
-      document.getElementById('revVal').textContent = '£' + annualRev.toLocaleString();
+      document.getElementById('revVal').textContent = '₹' + annualRev.toLocaleString();
       document.getElementById('riskVal').textContent = riskShare + '%';
 
       // Computations
@@ -730,9 +730,9 @@
         setTimeout(() => el.style.transform = 'scale(1)', 100);
       });
 
-      vipEl.textContent = '£' + Math.round(vipLift).toLocaleString();
-      churnEl.textContent = '£' + Math.round(churnRecovery).toLocaleString();
-      totalEl.textContent = '£' + Math.round(totalBoost).toLocaleString();
+      vipEl.textContent = '₹' + Math.round(vipLift).toLocaleString();
+      churnEl.textContent = '₹' + Math.round(churnRecovery).toLocaleString();
+      totalEl.textContent = '₹' + Math.round(totalBoost).toLocaleString();
     }
 
     // Run computation once at start

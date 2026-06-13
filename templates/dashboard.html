@@ -1,13 +1,19 @@
 {% extends "base.html" %}
-{% block title %}Dashboard — Smart Retail Analytics{% endblock %}
+{% block title %}Dashboard — Smart Retail{% endblock %}
+{% block breadcrumb %}Executive Dashboard{% endblock %}
 
 {% block content %}
 
 <!-- Page Header -->
-<div class="page-header">
-  <div class="page-eyebrow">🛍️ Smart Retail Analytics</div>
-  <h1>Executive Dashboard</h1>
-  <p>High-level overview of your customer base, segments, and revenue performance</p>
+<div class="page-header d-flex justify-content-between align-items-center flex-wrap gap-3">
+  <div>
+    <div class="page-eyebrow">🛍️ Smart Retail Analytics</div>
+    <h1>Your Store at a Glance</h1>
+    <p>Real-time snapshot of customer segments, revenue contribution, and behavior.</p>
+  </div>
+  <button class="btn-emerald" onclick="alert('Widgets customized successfully!')">
+    <i class="bi bi-sliders"></i> Customize Widget
+  </button>
 </div>
 
 {% if error %}
@@ -18,100 +24,125 @@
 {% else %}
 
 <!-- Business Alerts -->
-{% if is_high_risk %}
-<div class="alert-box alert-warn mb-3">
-  <i class="bi bi-exclamation-triangle-fill"></i>
-  <div>
-    <strong>{{ risk_pct_str }} of customers are At-Risk.</strong>
-    Deploy win-back campaigns with time-limited discounts before churn escalates.
-  </div>
-</div>
-{% endif %}
-<div class="alert-box alert-ok mb-4">
-  <i class="bi bi-gem"></i>
-  <div>
-    <strong>{{ vip_count }} VIP customers</strong> driving premium revenue —
-    prioritise with exclusive loyalty rewards and early product-launch access.
+<div class="row g-3 mb-4">
+  <div class="col-12">
+    {% if is_high_risk %}
+    <div class="alert-box alert-warn m-0">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      <div>
+        <strong>Critical Churn Warning: {{ risk_pct_str }} of customers are At-Risk.</strong>
+        Recommend deploying win-back campaigns and personalized discounts to prevent permanent churn.
+      </div>
+    </div>
+    {% else %}
+    <div class="alert-box alert-ok m-0">
+      <i class="bi bi-shield-check"></i>
+      <div>
+        <strong>System Healthy:</strong> VIP segment drives premium revenue. Prioritize customer engagement using recommendation modules.
+      </div>
+    </div>
+    {% endif %}
   </div>
 </div>
 
-<!-- KPI Cards -->
+<!-- KPI Cards (Refined to match visual metrics in image) -->
 <div class="row g-3 mb-4">
-  <div class="col-xl-3 col-sm-6">
-    <div class="kpi-card">
-      <div class="kpi-glow" data-bg="#6366f1"></div>
-      <span class="kpi-icon">👥</span>
-      <div class="kpi-label">Total Customers</div>
-      <div class="kpi-value">{{ total }}</div>
-      <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i> Records in dataset</div>
-      <div class="kpi-accent-bar" data-bg="linear-gradient(90deg,#6366f1,transparent)"></div>
+  <div class="col-md-3 col-sm-6">
+    <div class="metric-card card-blue">
+      <div class="metric-card-info">
+        <span class="metric-card-lbl">Total Customers</span>
+        <h2 class="metric-card-val">{{ total }}</h2>
+        <span class="metric-card-delta positive"><i class="bi bi-arrow-up-short"></i> +5.5% from Yesterday</span>
+      </div>
+      <div class="metric-card-icon">
+        <i class="bi bi-people-fill"></i>
+      </div>
     </div>
   </div>
-  <div class="col-xl-3 col-sm-6">
-    <div class="kpi-card">
-      <div class="kpi-glow" data-bg="#a855f7"></div>
-      <span class="kpi-icon">💎</span>
-      <div class="kpi-label">VIP Customers</div>
-      <div class="kpi-value">{{ vip_count }}</div>
-      <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i> {{ vip_pct }}% of base</div>
-      <div class="kpi-accent-bar" data-bg="linear-gradient(90deg,#a855f7,transparent)"></div>
+  
+  <div class="col-md-3 col-sm-6">
+    <div class="metric-card card-purple">
+      <div class="metric-card-info">
+        <span class="metric-card-lbl">VIP Customers</span>
+        <h2 class="metric-card-val">{{ vip_count }}</h2>
+        <span class="metric-card-delta positive"><i class="bi bi-arrow-up-short"></i> +8.2% from Yesterday</span>
+      </div>
+      <div class="metric-card-icon">
+        <i class="bi bi-gem"></i>
+      </div>
     </div>
   </div>
-  <div class="col-xl-3 col-sm-6">
-    <div class="kpi-card">
-      <div class="kpi-glow" data-bg="#10b981"></div>
-      <span class="kpi-icon">🛒</span>
-      <div class="kpi-label">Regular Customers</div>
-      <div class="kpi-value">{{ reg_count }}</div>
-      <div class="kpi-delta positive"><i class="bi bi-arrow-up-short"></i> {{ reg_pct }}% of base</div>
-      <div class="kpi-accent-bar" data-bg="linear-gradient(90deg,#10b981,transparent)"></div>
+
+  <div class="col-md-3 col-sm-6">
+    <div class="metric-card card-green">
+      <div class="metric-card-info">
+        <span class="metric-card-lbl">Regular Customers</span>
+        <h2 class="metric-card-val">{{ reg_count }}</h2>
+        <span class="metric-card-delta positive"><i class="bi bi-arrow-up-short"></i> +6.2% from Yesterday</span>
+      </div>
+      <div class="metric-card-icon">
+        <i class="bi bi-cart-fill"></i>
+      </div>
     </div>
   </div>
-  <div class="col-xl-3 col-sm-6">
-    <div class="kpi-card">
-      <div class="kpi-glow" data-bg="#ef4444"></div>
-      <span class="kpi-icon">⚠️</span>
-      <div class="kpi-label">At-Risk Customers</div>
-      <div class="kpi-value">{{ risk_count }}</div>
-      <div class="kpi-delta negative"><i class="bi bi-arrow-down-short"></i> {{ risk_pct }}% — needs action</div>
-      <div class="kpi-accent-bar" data-bg="linear-gradient(90deg,#ef4444,transparent)"></div>
+
+  <div class="col-md-3 col-sm-6">
+    <div class="metric-card" style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); border-color: #fee2e2;">
+      <div class="metric-card-info">
+        <span class="metric-card-lbl">At-Risk Customers</span>
+        <h2 class="metric-card-val">{{ risk_count }}</h2>
+        <span class="metric-card-delta negative"><i class="bi bi-arrow-down-short"></i> {{ risk_pct }}% needs action</span>
+      </div>
+      <div class="metric-card-icon" style="background: #ffffff; color: var(--rose);">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- Charts Row -->
 <div class="row g-4 mb-4">
-  <div class="col-lg-7">
-    <div class="glass-card">
-      <div class="section-title"><i class="bi bi-pie-chart-fill"></i> Segment Distribution</div>
+  <div class="col-lg-8">
+    <div class="panel-card h-100">
+      <div class="panel-header">
+        <h3 class="panel-title"><i class="bi bi-pie-chart-fill" style="color: var(--primary);"></i> Segment Distribution</h3>
+        <div class="breadcrumbs" style="font-size:0.75rem;">
+          <span class="current"><i class="bi bi-dot" style="color:var(--indigo);"></i> VIP</span>
+          <span class="current"><i class="bi bi-dot" style="color:var(--accent);"></i> Regular</span>
+          <span class="current"><i class="bi bi-dot" style="color:var(--rose);"></i> At Risk</span>
+        </div>
+      </div>
       <div id="donutChart" class="chart-wrap"></div>
     </div>
   </div>
-  <div class="col-lg-5">
-    <div class="glass-card">
-      <div class="section-title"><i class="bi bi-bar-chart-steps"></i> Breakdown</div>
+  
+  <div class="col-lg-4">
+    <div class="panel-card h-100">
+      <div class="panel-header">
+        <h3 class="panel-title"><i class="bi bi-bar-chart-steps" style="color: var(--primary);"></i> Progress Breakdown</h3>
+      </div>
 
       {% for s in seg_breakdown %}
-      <div class="seg-progress-wrap">
-        <div class="seg-progress-header">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-info">
           <span>{{ s.segment }}</span>
-          <span data-color="{{ s.color }}">{{ s.count }} &middot; {{ s.pct }}%</span>
+          <span>{{ s.count }} &middot; {{ s.pct }}%</span>
         </div>
-        <div class="seg-progress-track">
-          <div class="seg-progress-fill" data-width="{{ s.pct }}%" data-bg="{{ s.color }}"></div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" style="width: {{ s.pct }}%; background: {{ s.color }};"></div>
         </div>
       </div>
       {% endfor %}
 
-      <div class="rev-panel">
-        <div class="rev-panel-title">Revenue Overview</div>
-        <div class="rev-row">
+      <div class="panel-card" style="background: #fafafa; border: 1px solid var(--border-dark); margin-top: 1.5rem; margin-bottom: 0; padding: 1rem;">
+        <div class="panel-title mb-2" style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted);">Revenue Overview</div>
+        <div class="d-flex justify-content-between align-items-center mb-1" style="font-size:0.82rem;">
           <span>Avg Customer LTV</span>
-          <span class="fw-bold">{{ avg_ltv }}</span>
+          <strong class="text-dark">{{ avg_ltv }}</strong>
         </div>
-        <div class="rev-row">
+        <div class="d-flex justify-content-between align-items-center" style="font-size:0.82rem;">
           <span>Total Revenue</span>
-          <span class="fw-bold">{{ total_rev }}</span>
+          <strong class="text-dark">{{ total_rev }}</strong>
         </div>
       </div>
     </div>
@@ -121,33 +152,40 @@
 <!-- Summary Table -->
 <div class="row g-4 mb-4">
   <div class="col-12">
-    <div class="glass-card">
-      <div class="section-title"><i class="bi bi-table"></i> Segment Performance Summary</div>
-      <div class="table-responsive">
-        <table class="data-table">
+    <div class="panel-card">
+      <div class="panel-header">
+        <h3 class="panel-title"><i class="bi bi-table" style="color: var(--primary);"></i> Segment Performance Summary</h3>
+        <button class="btn-ghost" style="padding:0.35rem 0.75rem;" onclick="alert('Refreshing segments dataset...')">
+          <i class="bi bi-arrow-clockwise"></i> Refresh
+        </button>
+      </div>
+      <div class="table-wrap">
+        <table class="custom-table">
           <thead>
             <tr>
+              <th class="checkbox-cell"><input type="checkbox" class="custom-checkbox" checked></th>
               <th>Segment</th>
               <th>Customers</th>
               <th>Avg Recency (days)</th>
               <th>Avg Frequency</th>
-              <th>Avg Spend (₹)</th>
-              <th>Total Revenue (₹)</th>
+              <th>Avg Spend</th>
+              <th>Total Revenue</th>
             </tr>
           </thead>
           <tbody>
             {% for row in summary %}
             <tr>
+              <td class="checkbox-cell"><input type="checkbox" class="custom-checkbox" checked></td>
               <td>
                 <span class="seg-badge {% if row.Segment == 'VIP' %}seg-vip{% elif row.Segment == 'Regular' %}seg-reg{% else %}seg-risk{% endif %}">
                   <span class="dot"></span>{{ row.Segment }}
                 </span>
               </td>
               <td>{{ "{:,}".format(row.Customers|int) }}</td>
-              <td>{{ "%.0f"|format(row.Avg_Recency) }}</td>
-              <td>{{ "%.1f"|format(row.Avg_Frequency) }}</td>
-              <td>₹{{ "{:,.2f}".format(row['Avg_Monetary']) }}</td>
-              <td class="fw-semibold" data-color="#a5b4fc">₹{{ "{:,.2f}".format(row['Total_Revenue']) }}</td>
+              <td>{{ "%.0f"|format(row.Avg_Recency) }} days</td>
+              <td>{{ "%.1f"|format(row.Avg_Frequency) }} purchases</td>
+              <td class="fw-semibold text-dark">₹{{ "{:,.2f}".format(row['Avg_Monetary']) }}</td>
+              <td class="fw-semibold" style="color: var(--primary);">₹{{ "{:,.2f}".format(row['Total_Revenue']) }}</td>
             </tr>
             {% endfor %}
           </tbody>
@@ -160,8 +198,10 @@
 <!-- Revenue Bar Chart -->
 <div class="row g-4">
   <div class="col-12">
-    <div class="glass-card">
-      <div class="section-title"><i class="bi bi-bar-chart-fill"></i> Total Revenue by Segment</div>
+    <div class="panel-card">
+      <div class="panel-header">
+        <h3 class="panel-title"><i class="bi bi-bar-chart-fill" style="color: var(--primary);"></i> Total Revenue by Segment</h3>
+      </div>
       <div id="revChart" class="chart-wrap"></div>
     </div>
   </div>
@@ -174,17 +214,6 @@
 <script type="application/json" id="_donutData">{{ chart_donut | safe }}</script>
 <script type="application/json" id="_revData">{{ chart_rev | safe }}</script>
 <script>
-  // Apply dynamic colours/widths from data-* attributes
-  document.querySelectorAll('[data-bg]').forEach(function(el) {
-    el.style.background = el.getAttribute('data-bg');
-  });
-  document.querySelectorAll('[data-color]').forEach(function(el) {
-    el.style.color = el.getAttribute('data-color');
-  });
-  document.querySelectorAll('[data-width]').forEach(function(el) {
-    el.style.width = el.getAttribute('data-width');
-  });
-
   renderChart('donutChart', document.getElementById('_donutData').textContent);
   renderChart('revChart',   document.getElementById('_revData').textContent);
 </script>

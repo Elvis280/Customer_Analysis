@@ -35,32 +35,32 @@ SEGMENT_COLORS = {
     "At Risk": "#ef4444",
 }
 
-# Base Plotly dark-theme layout (no xaxis/yaxis/legend — added per chart)
+# Base Plotly light-theme layout (no xaxis/yaxis/legend — added per chart)
 _PLOTLY_BASE = dict(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(family="Inter, sans-serif", color="#94a3b8", size=13),
+    font=dict(family="Inter, sans-serif", color="#4b5563", size=13),
     margin=dict(l=60, r=60, t=60, b=60),
-    title_font=dict(color="#e2e8f0", size=15, family="Inter, sans-serif"),
+    title_font=dict(color="#111827", size=15, family="Inter, sans-serif"),
     hoverlabel=dict(
-        bgcolor="rgba(8,14,26,0.96)",
-        bordercolor="rgba(99,102,241,0.45)",
-        font=dict(family="Inter, sans-serif", color="#f8fafc", size=13),
+        bgcolor="#ffffff",
+        bordercolor="#e5e7eb",
+        font=dict(family="Inter, sans-serif", color="#111827", size=13),
     ),
 )
 
 _AXIS = dict(
-    gridcolor="rgba(255,255,255,0.07)",
-    linecolor="rgba(255,255,255,0.10)",
-    zerolinecolor="rgba(255,255,255,0.07)",
-    tickfont=dict(color="#94a3b8", size=12),
+    gridcolor="rgba(0,0,0,0.05)",
+    linecolor="rgba(0,0,0,0.05)",
+    zerolinecolor="rgba(0,0,0,0.05)",
+    tickfont=dict(color="#4b5563", size=12),
 )
 
 _LEGEND = dict(
-    bgcolor="rgba(8,14,26,0.88)",
-    bordercolor="rgba(255,255,255,0.07)",
+    bgcolor="rgba(255,255,255,0.9)",
+    bordercolor="rgba(0,0,0,0.05)",
     borderwidth=1,
-    font=dict(color="#cbd5e1", size=12),
+    font=dict(color="#4b5563", size=12),
 )
 
 
@@ -153,8 +153,8 @@ def to_json(fig) -> str:
     return json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
 
-def fmt_gbp(v: float) -> str:
-    return f"£{v:,.2f}"
+def fmt_inr(v: float) -> str:
+    return f"₹{v:,.2f}"
 
 
 _INTELLIGENCE = {
@@ -370,17 +370,17 @@ def dashboard():
 
     # ── Revenue bar chart ──────────────────────────────────────────────────
     rev_df = df.groupby("Segment")["Monetary"].sum().reset_index()
-    rev_df.columns = ["Segment", "Total Sales (£)"]
-    rev_df = rev_df.sort_values("Total Sales (£)", ascending=False)
+    rev_df.columns = ["Segment", "Total Sales (₹)"]
+    rev_df = rev_df.sort_values("Total Sales (₹)", ascending=False)
     fig_rev = px.bar(
-        rev_df, x="Segment", y="Total Sales (£)",
+        rev_df, x="Segment", y="Total Sales (₹)",
         color="Segment", color_discrete_map=SEGMENT_COLORS,
         title="💰 Total Sales Revenue by Customer Group",
-        text=rev_df["Total Sales (£)"].map(lambda v: f"£{v:,.0f}"),
+        text=rev_df["Total Sales (₹)"].map(lambda v: f"₹{v:,.0f}"),
     )
     fig_rev.update_traces(textposition="outside", marker_line_width=0, width=0.45,
                           textfont=dict(color="#f1f5f9", size=12))
-    fig_rev.update_layout(**_layout(height=340, showlegend=False, yaxis_title="Total Sales (£)"))
+    fig_rev.update_layout(**_layout(height=340, showlegend=False, yaxis_title="Total Sales (₹)"))
 
     # ── Summary statistics ─────────────────────────────────────────────────
     summary = (
@@ -417,8 +417,8 @@ def dashboard():
         vip_pct=f"{vip_count/total*100:.1f}",
         reg_pct=f"{reg_count/total*100:.1f}",
         risk_pct=f"{risk_count/total*100:.1f}",
-        avg_ltv=fmt_gbp(df["Monetary"].mean()),
-        total_rev=fmt_gbp(df["Monetary"].sum()),
+        avg_ltv=fmt_inr(df["Monetary"].mean()),
+        total_rev=fmt_inr(df["Monetary"].sum()),
         seg_breakdown=seg_breakdown,
         chart_donut=to_json(fig_donut),
         chart_rev=to_json(fig_rev),
@@ -521,14 +521,14 @@ def insights():
                                        "At Risk": "seg-risk"}.get(seg, "seg-reg"),
                         "recency":    int(r["Recency"]),
                         "frequency":  int(r["Frequency"]),
-                        "monetary":   fmt_gbp(r["Monetary"]),
+                        "monetary":   fmt_inr(r["Monetary"]),
                         "r_pct":      round(r_pct * 100, 1),
                         "f_pct":      round(f_pct * 100, 1),
                         "m_pct":      round(m_pct * 100, 1),
                         "top_pct":    f"{100 - pct_rank*100:.0f}",
                         "avg_recency":  f"{df['Recency'].mean():.0f}",
                         "avg_frequency": f"{df['Frequency'].mean():.1f}",
-                        "avg_monetary":  fmt_gbp(df["Monetary"].mean()),
+                        "avg_monetary":  fmt_inr(df["Monetary"].mean()),
                         "chart_radar":   to_json(fig_radar),
                         "intel":         _INTELLIGENCE.get(seg, _INTELLIGENCE["Regular"]),
                     }
@@ -665,7 +665,7 @@ def nba_route():
                         "segment": cust["Segment"],
                         "recency": int(cust["Recency"]),
                         "frequency": int(cust["Frequency"]),
-                        "monetary": fmt_gbp(cust["Monetary"])
+                        "monetary": fmt_inr(cust["Monetary"])
                     }
                     actions = NBA_ENGINE.get_actions(customer_id)
             except ValueError:
@@ -714,12 +714,12 @@ def analytics():
         top10, x="Monetary", y="CustomerID", orientation="h",
         color="Segment", color_discrete_map=SEGMENT_COLORS,
         title="🏆 Your Top 10 Highest-Spending Customers",
-        labels={"Monetary": "Total Spend (£)", "CustomerID": "Customer"},
-        text=top10["Monetary"].map("£{:,.0f}".format),
+        labels={"Monetary": "Total Spend (₹)", "CustomerID": "Customer"},
+        text=top10["Monetary"].map("₹{:,.0f}".format),
     )
     fig_top.update_traces(textposition="outside", marker_line_width=0,
                           textfont=dict(color="#f1f5f9", size=12))
-    fig_top.update_layout(**_layout(height=420, xaxis_title="Total Spend (£)", yaxis_title="Customer"))
+    fig_top.update_layout(**_layout(height=420, xaxis_title="Total Spend (₹)", yaxis_title="Customer"))
 
     # 3. Recency histogram
     fig_rec = px.histogram(
@@ -760,14 +760,14 @@ def analytics():
         x="Segment", y="Monetary",
         color="Segment", color_discrete_map=SEGMENT_COLORS,
         title="💷 Typical Spend Range by Customer Group",
-        labels={"Monetary": "Total Spend (£)", "Segment": "Customer Group"},
+        labels={"Monetary": "Total Spend (₹)", "Segment": "Customer Group"},
         points="outliers",
     )
     fig_box.update_traces(marker_size=4, line_width=1.8)
     fig_box.update_layout(**_layout(
         height=420, showlegend=False,
         xaxis_title="Customer Group",
-        yaxis_title="Total Spend (£)",
+        yaxis_title="Total Spend (₹)",
     ))
 
     # 6. Scatter
@@ -779,7 +779,7 @@ def analytics():
         title="🔍 Recency vs. Total Spend — Bubble Size = How Often They Buy",
         labels={
             "Recency": "Days Since Last Purchase",
-            "Monetary": "Total Spend (£)",
+            "Monetary": "Total Spend (₹)",
             "Frequency": "Times Purchased",
             "Segment": "Customer Group",
         },
@@ -787,7 +787,7 @@ def analytics():
     fig_scat.update_layout(**_layout(
         height=480,
         xaxis_title="Days Since Last Purchase",
-        yaxis_title="Total Spend (£)",
+        yaxis_title="Total Spend (₹)",
     ))
 
     # 7. Treemap
@@ -798,10 +798,10 @@ def analytics():
         color="Monetary",
         color_continuous_scale=["#1e1b4b", "#6366f1", "#a855f7"],
         title="🗺️ Top 20 Customers — Who Contributes the Most Revenue",
-        labels={"Monetary": "Total Spend (£)"},
+        labels={"Monetary": "Total Spend (₹)"},
     )
     fig_tree.update_traces(
-        hovertemplate="<b>%{label}</b><br>Total Spend: £%{value:,.0f}<extra></extra>"
+        hovertemplate="<b>%{label}</b><br>Total Spend: ₹%{value:,.0f}<extra></extra>"
     )
     fig_tree.update_layout(
         height=460,
@@ -810,7 +810,7 @@ def analytics():
         margin=dict(l=20, r=20, t=65, b=20),
         title_font=dict(color="#e2e8f0", size=15),
         coloraxis_colorbar=dict(
-            title="Spend (£)",
+            title="Spend (₹)",
             tickfont=dict(color="#cbd5e1", size=11),
             title_font=dict(color="#cbd5e1"),
         ),
@@ -827,20 +827,20 @@ def analytics():
         df_bkt.groupby("Purchases Made", observed=True)["Monetary"]
         .mean().reset_index()
     )
-    avg_mon.columns = ["Purchases Made", "Avg Total Spend (£)"]
+    avg_mon.columns = ["Purchases Made", "Avg Total Spend (₹)"]
     fig_bkt = px.bar(
-        avg_mon, x="Purchases Made", y="Avg Total Spend (£)",
-        color="Avg Total Spend (£)",
+        avg_mon, x="Purchases Made", y="Avg Total Spend (₹)",
+        color="Avg Total Spend (₹)",
         color_continuous_scale=["#3b82f6", "#6366f1", "#a855f7"],
         title="📈 Do Loyal Customers Spend More? Average Spend by Visit Frequency",
-        text=avg_mon["Avg Total Spend (£)"].map("£{:,.0f}".format),
+        text=avg_mon["Avg Total Spend (₹)"].map("₹{:,.0f}".format),
     )
     fig_bkt.update_traces(textposition="outside", marker_line_width=0, width=0.52,
                           textfont=dict(color="#f1f5f9", size=12))
     fig_bkt.update_layout(**_layout(
         height=400, showlegend=False, coloraxis_showscale=False,
         xaxis_title="How Many Times They've Purchased",
-        yaxis_title="Average Total Spend (£)",
+        yaxis_title="Average Total Spend (₹)",
     ))
 
     return render_template(

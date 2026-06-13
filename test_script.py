@@ -1,5 +1,5 @@
 import pandas as pd
-from app import _load_data, to_json, fmt_gbp, _INTELLIGENCE, SEGMENT_COLORS
+from app import _load_data, to_json, fmt_inr, _INTELLIGENCE, SEGMENT_COLORS
 import plotly.graph_objects as go
 
 df_c, df_r, model = _load_data()
@@ -43,14 +43,14 @@ try:
                        'At Risk': 'seg-risk'}.get(seg, 'seg-reg'),
         'recency':    int(r['Recency']),
         'frequency':  int(r['Frequency']),
-        'monetary':   fmt_gbp(r['Monetary']),
+        'monetary':   fmt_inr(r['Monetary']),
         'r_pct':      round(r_pct * 100, 1),
         'f_pct':      round(f_pct * 100, 1),
         'm_pct':      round(m_pct * 100, 1),
         'top_pct':    f'{100 - pct_rank*100:.0f}',
         'avg_recency':  f'{df["Recency"].mean():.0f}',
         'avg_frequency': f'{df["Frequency"].mean():.1f}',
-        'avg_monetary':  fmt_gbp(df['Monetary'].mean()),
+        'avg_monetary':  fmt_inr(df['Monetary'].mean()),
         'chart_radar':   to_json(fig_radar),
         'intel':         _INTELLIGENCE.get(seg, _INTELLIGENCE['Regular']),
     }
