@@ -16,6 +16,7 @@
   <div class="search-title">Find a Customer</div>
   <div class="search-sub">Enter a Customer ID to instantly load their profile and behavioral data.</div>
   <form method="POST" action="{{ url_for('insights') }}" id="searchForm">
+<<<<<<< HEAD
     <div class="search-row flex-wrap gap-2">
       <div class="input-group-custom m-0" style="flex: 1; max-width: 320px;">
         <input
@@ -29,6 +30,13 @@
           autofocus
         >
         <i class="bi bi-search"></i>
+=======
+    <div class="search-row">
+      <div class="input-wrap">
+        <input type="text" name="customer_id" id="customerIdInput" class="input-custom"
+          placeholder="e.g. {{ id_range.min }}" value="{{ cid_value }}" autocomplete="off" autofocus>
+        <i class="bi bi-search input-icon"></i>
+>>>>>>> f3b4270e02445c300029bfa165d7971602f9cdc6
       </div>
       <button type="submit" class="btn-indigo" id="searchBtn">
         <i class="bi bi-search"></i> Search
@@ -66,6 +74,7 @@
   <div class="empty-state py-5" style="text-align: center;">
     <div style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;">🔍</div>
     <h3>Search for a Customer</h3>
+<<<<<<< HEAD
     <p class="text-muted" style="max-width: 420px; margin: 0 auto;">Enter a Customer ID in the field above to view their complete profile including RFM scores, segment classification, and recommendation triggers.</p>
   </div>
 
@@ -101,6 +110,56 @@
           {% endfor %}
         </tbody>
       </table>
+=======
+    <p>Enter a Customer ID in the field above to view their complete profile including RFM scores, segment
+      classification, and AI-powered recommendations.</p>
+  </div>
+
+  <!-- Sample customers table -->
+  <div class="accordion accordion-dark sample-accordion">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#sampleCollapse">
+          <i class="bi bi-table me-2"></i> Browse sample customers to get started
+        </button>
+      </h2>
+      <div id="sampleCollapse" class="accordion-collapse collapse">
+        <div class="accordion-body">
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Customer ID</th>
+                  <th>Segment</th>
+                  <th>Last Purchase (days ago)</th>
+                  <th>Orders</th>
+                  <th>Lifetime Spend</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for s in sample %}
+                <tr class="sample-row" data-cid="{{ s.CustomerID }}">
+                  <td class="fw-bold sample-id">{{ s.CustomerID }}</td>
+                  <td>
+                    <span
+                      class="seg-badge {% if s.Segment == 'VIP' %}seg-vip{% elif s.Segment == 'Regular' %}seg-reg{% else %}seg-risk{% endif %}">
+                      <span class="dot"></span>{{ s.Segment }}
+                    </span>
+                  </td>
+                  <td>{{ s.Recency }}</td>
+                  <td>{{ s.Frequency }}</td>
+                  <td>₹{{ "%.2f"|format(s.Monetary) }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <p class="sample-hint">
+            <i class="bi bi-hand-index-thumb me-1"></i> Click any row to instantly load that customer
+          </p>
+        </div>
+      </div>
+>>>>>>> f3b4270e02445c300029bfa165d7971602f9cdc6
     </div>
   </div>
 </div>
@@ -202,6 +261,7 @@
         </div>
       </div>
 
+<<<<<<< HEAD
       <div class="panel-card" style="background:#fafafa; border:1px solid var(--border-dark); margin-top:1.5rem; margin-bottom:0; padding:1rem;">
         <div class="panel-title mb-2" style="font-size:0.75rem; text-transform:uppercase; color:var(--text-muted);">vs. Average Benchmarks</div>
         <div class="stat-row">
@@ -216,6 +276,22 @@
           <span class="stat-lbl">Spend (Customer vs. Avg)</span>
           <span class="stat-val">{{ customer.monetary }} / <span class="text-muted font-normal">{{ customer.avg_monetary }}</span></span>
         </div>
+=======
+      <div class="mt-3 pt-3 stat-compare-block">
+        <div class="stat-compare-title">vs. All Customers (avg)</div>
+        <div class="stat-row"><span class="stat-lbl">Recency — this customer</span><span class="stat-val">{{
+            customer.recency }} days</span></div>
+        <div class="stat-row"><span class="stat-lbl">Recency — average</span><span class="stat-val stat-muted">{{
+            customer.avg_recency }} days</span></div>
+        <div class="stat-row"><span class="stat-lbl">Orders — this customer</span><span class="stat-val">{{
+            customer.frequency }}</span></div>
+        <div class="stat-row"><span class="stat-lbl">Orders — average</span><span class="stat-val stat-muted">{{
+            customer.avg_frequency }}</span></div>
+        <div class="stat-row"><span class="stat-lbl">Spend — this customer</span><span class="stat-val">{{
+            customer.monetary }}</span></div>
+        <div class="stat-row"><span class="stat-lbl">Spend — average</span><span class="stat-val stat-muted">{{
+            customer.avg_monetary }}</span></div>
+>>>>>>> f3b4270e02445c300029bfa165d7971602f9cdc6
       </div>
     </div>
   </div>
@@ -258,10 +334,41 @@
 {% block page_scripts %}
 {% if customer %}
 <script type="application/json" id="_radarData">{{ customer.chart_radar | safe }}</script>
+<<<<<<< HEAD
+=======
+{% endif %}
+<script>
+  // Apply all dynamic styles from data-* attributes
+  document.querySelectorAll('[data-bg]').forEach(function (el) {
+    el.style.background = el.getAttribute('data-bg');
+  });
+  document.querySelectorAll('[data-color]').forEach(function (el) {
+    el.style.color = el.getAttribute('data-color');
+  });
+  document.querySelectorAll('[data-width]').forEach(function (el) {
+    el.style.width = el.getAttribute('data-width');
+  });
+  document.querySelectorAll('[data-border-left]').forEach(function (el) {
+    el.style.borderLeft = '3px solid ' + el.getAttribute('data-border-left');
+  });
+
+  // Sample-table click-to-load
+  document.querySelectorAll('.sample-row').forEach(function (row) {
+    row.style.cursor = 'pointer';
+    row.addEventListener('click', function () {
+      var input = document.getElementById('customerIdInput');
+      if (input) { input.value = row.getAttribute('data-cid'); document.getElementById('searchForm').submit(); }
+    });
+  });
+</script>
+
+{% if customer %}
+>>>>>>> f3b4270e02445c300029bfa165d7971602f9cdc6
 <script>
   renderChart('radarChart', document.getElementById('_radarData').textContent);
 </script>
 {% endif %}
+<<<<<<< HEAD
 <script>
   // Click sample row to search
   document.querySelectorAll('.sample-row').forEach(row => {
@@ -275,3 +382,6 @@
   });
 </script>
 {% endblock %}
+=======
+{% endblock %}
+>>>>>>> f3b4270e02445c300029bfa165d7971602f9cdc6

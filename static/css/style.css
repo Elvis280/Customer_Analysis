@@ -447,9 +447,57 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: var(--r-sm);
 }
 
+<<<<<<< HEAD
 .profile-avatar-img {
   width: 36px;
   height: 36px;
+=======
+.alert-box i {
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: .05rem;
+}
+
+.alert-warn {
+  background: rgba(245, 158, 11, .08);
+  border-color: rgba(245, 158, 11, .3);
+  color: #fcd34d;
+}
+
+.alert-info {
+  background: rgba(99, 102, 241, .08);
+  border-color: rgba(99, 102, 241, .25);
+  color: #a5b4fc;
+}
+
+.alert-ok {
+  background: rgba(16, 185, 129, .08);
+  border-color: rgba(16, 185, 129, .3);
+  color: #6ee7b7;
+}
+
+.alert-risk {
+  background: rgba(239, 68, 68, .08);
+  border-color: rgba(239, 68, 68, .3);
+  color: #fca5a5;
+}
+
+/* ── SEGMENT BADGES ──────────────────────────────────────────── */
+.seg-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .28rem .8rem;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+.seg-badge .dot {
+  width: 6px;
+  height: 6px;
+>>>>>>> f3b4270e02445c300029bfa165d7971602f9cdc6
   border-radius: 50%;
   object-fit: cover;
   background: linear-gradient(135deg, var(--indigo), var(--purple));
